@@ -36,7 +36,7 @@ public class DepartmentController {
         return departmentService.saveDepartment(department);
     }
 
-    /* hello */
+    /* hello 2*/
     @DeleteMapping("/deleteDepartment/{id}")
     public void deleteDepartment(@PathVariable Long id) {
         departmentService.deleteDepartment(id);
