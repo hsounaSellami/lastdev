@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "hsounaSellami/alpine:1.0.0"
+        DOCKER_IMAGE = "hsounasellami/student-management:1.0.0"
         REGISTRY_CREDENTIALS = 'dockertoken'
     }
 
@@ -14,30 +14,30 @@ pipeline {
             }
         }
 
-        stage('Clean & Build Project') {
+        stage('Build Maven') {
             steps {
-                sh 'mvn clean install -DskipTests' 
+                sh 'mvn clean package -DskipTests'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    sh "docker build -t ${DOCKER_IMAGE} ."
+                sh "docker build -t ${DOCKER_IMAGE} ."
+            }
+        }
+
+        stage('Docker Hub Login') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: REGISTRY_CREDENTIALS, usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    sh "echo $PASS | docker login -u $USER --password-stdin"
                 }
             }
         }
 
         stage('Push Docker Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: REGISTRY_CREDENTIALS, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-                    sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
-                }
                 sh "docker push ${DOCKER_IMAGE}"
             }
         }
     }
-   
-
-    
 }

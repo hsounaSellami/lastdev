@@ -1,5 +1,5 @@
 # 1️⃣ Image de base OpenJDK 17 officielle
-FROM openjdk:17
+FROM eclipse-temurin:17
 
 # 2️⃣ Définir le répertoire de travail
 WORKDIR /app
