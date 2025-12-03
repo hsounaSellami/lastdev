@@ -13,4 +13,5 @@ EXPOSE 8080
 
 
 # 6️⃣ Commande pour lancer ton application
-CMD ["java", "-jar", "target/student-management-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "app.jar"]
+
