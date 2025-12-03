@@ -2,27 +2,43 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "monuser/monapp:latest"
+        DOCKER_IMAGE = "hsounaSellami/alpine:1.0.0"
+        REGISTRY_CREDENTIALS = 'dockertoken'
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 git url: 'https://github.com/hsounaSellami/lastdev.git', branch: 'main'
             }
         }
 
-        stage('Build') {
+        stage('Clean & Build Project') {
             steps {
                 sh 'mvn clean install'
             }
         }
 
-        stage('Docker Build & Push') {
+        stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $DOCKER_IMAGE .'
-                sh 'docker push $DOCKER_IMAGE'
+                script {
+                    sh "docker build -t ${DOCKER_IMAGE} ."
+                }
             }
         }
+
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: REGISTRY_CREDENTIALS, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                    sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
+                }
+                sh "docker push ${DOCKER_IMAGE}"
+            }
+        }
+    }
+
+    triggers {
+        
     }
 }
