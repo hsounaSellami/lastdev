@@ -8,7 +8,7 @@ import tn.esprit.studentmanagement.services.DepartmentService;
 import tn.esprit.studentmanagement.services.IDepartmentService;
 
 import java.util.List;
-/*hello mf 22 */
+/*hello mf 22 2*/
 @RestController
 @RequestMapping("/Depatment")
 @CrossOrigin(origins = "http://localhost:4200")
