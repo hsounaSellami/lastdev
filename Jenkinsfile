@@ -37,6 +37,9 @@ pipeline {
             }
         }
     }
+    triggers {
+        pollSCM('H/1 * * * *') // Vérifie le dépôt toutes les minutes
+    }
 
     
 }
